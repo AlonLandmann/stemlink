@@ -3,6 +3,7 @@ import ReviewCard from './ReviewCard'
 import ReviewForm from './ReviewForm'
 import ReviewSort from './ReviewSort'
 import Svg from '../Svg'
+import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 import cce from '../../lib/cce'
 import css from './InfoContent.module.scss'
@@ -10,6 +11,7 @@ import css from './InfoContent.module.scss'
 export default function InfoContent({ resource }) {
   const [sortInView, setSortInView] = useState(false)
   const [sortIsActive, setSortIsActive] = useState(false)
+  const { data: session } = useSession()
 
   function toggleSort() {
     setSortInView(prevSortInView => !prevSortInView)
@@ -46,7 +48,7 @@ export default function InfoContent({ resource }) {
             </div>
           </>
         }
-        {!resource.reviewedByUser &&
+        {session && !resource.reviewedByUser &&
           <>
             <div className={css.separator}><div></div></div>
             <div className={css.reviewFormContainer}>

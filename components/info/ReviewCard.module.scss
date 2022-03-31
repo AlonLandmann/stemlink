@@ -1,0 +1,68 @@
+@import '../../styles/mixins';
+
+.card {
+  @include standardField;
+  display: flex;
+  color: #555;
+}
+.main {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 12px 20px;
+}
+.topLine {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.rating {
+  margin-right: auto;
+  border-radius: 3px;
+  padding: 0px 8px;
+  font-size: 0.875rem;
+  color: #568;
+  background: #f0f4ff;
+}
+.delete {
+  margin-right: 12px;
+  font-size: 0.8125rem;
+  text-decoration: underline;
+  color: #9ac;
+  cursor: pointer;
+  &:hover {
+    color: #78a;
+  }
+}
+.writtenAtBy {
+  font-size: 0.75rem;
+  color: #bbb;
+}
+.title {
+  margin-bottom: 2px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+.content {
+  font-size: 0.8125rem;
+  color: #777;
+}
+.notUpvoted {
+  @include standardNegativeVoteButton;
+  border-right: 1px solid #eee;
+  border-radius: 3px 0px 0px 3px;
+  & Svg {
+    width: 18px;
+    height: 18px;
+    margin-top: 4px;
+  }
+}
+.upvoted {
+  @include standardPositiveVoteButton;
+  border-radius: 3px 0px 0px 3px;
+  & Svg {
+    width: 18px;
+    height: 18px;
+    margin-top: 4px;
+  }
+}

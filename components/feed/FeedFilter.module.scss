@@ -1,0 +1,14 @@
+@import '../../styles/mixins';
+
+.dropDownArea {
+  @include standardDropDownArea;
+}
+.heading {
+  @include standardDropDownHeading;
+}
+.itemContainer {
+  @include standardDropDownItemContainer;
+}
+.item {
+  @include standardDropDownItem;
+}

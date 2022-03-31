@@ -1,0 +1,27 @@
+.container {
+  position: fixed;
+  top: 50px;
+  z-index: 2;
+  width: 100%;
+  border-bottom: 1px solid #ddd;
+  background: #fff;
+}
+.item {
+  display: flex;
+  gap: 30px;
+  padding: 20px;
+  font-size: 0.875rem;
+  color: #222;
+  cursor: pointer;
+  &:hover {
+    color: #555;
+    background: #fafafa;
+  }
+}
+.icon {
+  margin-top: 2px;
+  & > svg {
+    width: 14px;
+    height: 14px;
+  }
+}

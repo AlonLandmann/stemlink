@@ -1,0 +1,33 @@
+import Review from '../../../mongodb/models/Review'
+import { getSession } from 'next-auth/react'
+import dbConnect from '../../../mongodb/dbConnect'
+
+dbConnect()
+
+export default async function handler(req, res) {
+  const session = await getSession({ req })
+
+  try {
+    switch (req.method) {
+      case 'POST':
+        if (session && session.user.email === req.body.writtenBy) {
+          const postCursor = await Review.create(req.body)
+
+          if (postCursor) {
+            res.status(200).json({ success: true, data: postCursor })
+          } else {
+            res.status(400).json({ success: false })
+          }
+        } else {
+          res.status(401).json({ success: false })
+        }
+        break;
+
+      default:
+        res.status(400).json({ success: false })
+        break;
+    }
+  } catch (err) {
+    res.status(400).json({ success: false })
+  }
+}

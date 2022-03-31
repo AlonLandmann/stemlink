@@ -1,0 +1,26 @@
+@import '../../styles/mixins';
+
+.pageTitle {
+  @include standardPageTitle;
+}
+.formContainer {
+  max-width: $bp-content;
+  margin: auto;
+  padding: 8px;
+}
+.form {
+  @include standardField;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 18px 12px;
+}
+.inputGroup {
+  @include standardInputGroup;
+}
+.buttonContainer {
+  @include standardSubmitButtonContainer;
+}
+.errorMessage {
+  @include standardErrorMessage;
+}

@@ -1,0 +1,36 @@
+@import '../../styles/mixins';
+@import '../../styles/variables';
+
+.pageTitle {
+  @include standardPageTitle;
+}
+.sortButton {
+  @include standardDropDownButton;
+  margin-left: auto;
+  border-right: 1px solid #ddd;
+}
+.mainContainer {
+  max-width: $bp-content;
+  margin: auto;
+}
+.separator {
+  display: flex;
+  justify-content: center;
+  padding: 14px 8px;
+  & > div {
+    width: 5%;
+    border-top: 3px dotted #ccc;
+  }
+}
+.detailedCard {
+  padding: 8px 8px 0px;
+}
+.reviewContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0px 8px;
+}
+.reviewFormContainer {
+  padding: 0px 8px 30px;
+}

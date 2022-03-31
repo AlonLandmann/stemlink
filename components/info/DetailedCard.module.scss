@@ -1,0 +1,111 @@
+@import '../../styles/mixins';
+
+.card {
+  @include standardField;
+  display: flex;
+  color: #555;
+}
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 1;
+}
+.type {
+  padding: 22px 30px 12px;
+  & > Svg {
+    display: flex;
+    width: 20px;
+    height: 20px;
+  }
+}
+.title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0px 30px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+.rating {
+  display: flex;
+  align-items: flex-start;
+  & > div {
+    border-radius: 3px;
+    padding: 0px 8px;
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: #568;
+    background: #f0f4ff;
+  }
+}
+.author {
+  padding: 0px 30px 4px;
+  font-size: 0.75rem;
+  color: #bbb;
+}
+.paid {
+  padding: 0px 30px 18px;
+  font-size: 0.75rem;
+  color: #f26e5c;
+}
+.free {
+  padding: 0px 30px 18px;
+  font-size: 0.75rem;
+  color: #3cb043;
+}
+.topicsHeading {
+  padding: 0px 30px 3px;
+  font-size: 0.8125rem;
+  text-decoration: underline;
+}
+.topics {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px 24px 18px;
+  font-size: 0.75rem;
+  color: #999;
+  & > div {
+    max-width: 100%;
+    padding: 2px 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    &:hover {
+      background: #eee;
+    }
+  }
+}
+.links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 0px 30px 22px;
+  & > div {
+    font-size: 0.8125rem;
+    text-decoration: underline;
+    color: #9ac;
+    cursor: pointer;
+    &:hover {
+      color: #78a;
+    }
+  }
+}
+.notSaved {
+  @include standardNegativeVoteButton;
+  border-left: 1px solid #eee;
+  border-radius: 0px 3px 3px 0px;
+  & Svg {
+    margin-top: 4px;
+  }
+}
+.saved {
+  @include standardPositiveVoteButton;
+  border-radius: 0px 3px 3px 0px;
+  & Svg {
+    margin-top: 4px;
+  }
+}

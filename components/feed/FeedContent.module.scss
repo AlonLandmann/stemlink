@@ -1,0 +1,22 @@
+@import '../../styles/mixins';
+@import '../../styles/variables';
+
+.pageTitle {
+  @include standardPageTitle;
+}
+.filterButton {
+  @include standardDropDownButton;
+  margin-left: auto;
+}
+.sortButton {
+  @include standardDropDownButton;
+  border-right: 1px solid #ddd;
+}
+.feedContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: $bp-content;
+  margin: auto;
+  padding: 8px;
+}

@@ -44,13 +44,13 @@ export default function NewContent() {
     }
 
     // title
-    if (formData.title.length < 3 || formData.title.length > 30) {
-      errs.title = 'Title needs to have between 3 and 30 characters'
+    if (formData.title.length < 3 || formData.title.length > 100) {
+      errs.title = 'Title needs to have between 3 and 100 characters'
     }
 
     // Author
-    if (formData.author.length < 3 || formData.author.length > 30) {
-      errs.author = 'Author needs to have between 3 and 30 characters'
+    if (formData.author.length < 3 || formData.author.length > 100) {
+      errs.author = 'Author needs to have between 3 and 100 characters'
     }
 
     // Price
@@ -70,8 +70,8 @@ export default function NewContent() {
     } else {
       for (let i = 0; i < formData.topics.length; i++) {
         const tp = formData.topics[i]
-        if (tp.length < 3 || tp.length > 30) {
-          errs.topics = 'Topics need to have between 3 and 30 characters'
+        if (tp.length < 3 || tp.length > 100) {
+          errs.topics = 'Topics need to have between 3 and 100 characters'
         }
       }
     }

@@ -32,7 +32,7 @@ export default function SearchBar() {
           type='text'
           placeholder='search for links'
           autoComplete='off'
-          spellcheck='false'
+          spellCheck='false'
           value={searchString}
           onChange={handleChange}
         />

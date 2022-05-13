@@ -27,14 +27,11 @@
   padding: 12px 20px 12px 6px;
 }
 .title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
   font-size: 0.9375rem;
   font-weight: 500;
 }
 .author {
-  margin-bottom: 4px;
+  margin-bottom: 5px;
   font-size: 0.75rem;
   color: #bbb;
 }
@@ -48,19 +45,24 @@
 }
 .rating {
   display: flex;
-  align-items: flex-start;
-  & > div {
-    border-radius: 3px;
-    padding: 0px 8px;
-    font-size: 0.875rem;
-    font-weight: 400;
-    color: #568;
-    background: #f0f4ff;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-width: 55px;
+  // border-left: 1px solid #e0e4ef;
+  // border-right: 1px solid #e0e4ef;
+  border-left: 1px solid #e0e4ef;
+  border-right: 1px solid #e0e4ef;
+  padding: 8px;
+  font-size: 0.8125rem;
+  color: #555;
+  // background: #f0f4ff;
+  & Svg {
+    margin-top: 4px;
   }
 }
 .notSaved {
   @include standardNegativeVoteButton;
-  border-left: 1px solid #eee;
   border-radius: 0px 3px 3px 0px;
   & Svg {
     margin-top: 4px;

@@ -27,7 +27,7 @@ export default function Header() {
           <div className={css.searchBar}>
             <SearchBar />
           </div>
-          <HeaderMenu />
+          <HeaderMenu setDdmInView={setDdmInView} toggleDdm={toggleDdm} />
           <div className={css.ddm} onClick={toggleDdm}>
             <Svg icon={ddmInView ? 'close' : 'ddm'} />
           </div>

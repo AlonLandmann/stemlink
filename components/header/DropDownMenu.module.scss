@@ -1,3 +1,5 @@
+@import '../../styles/mixins';
+
 .container {
   position: fixed;
   top: 50px;
@@ -6,7 +8,8 @@
   border-bottom: 1px solid #ddd;
   background: #fff;
 }
-.item {
+.item,
+.itemLarge {
   display: flex;
   gap: 30px;
   padding: 20px;
@@ -23,5 +26,11 @@
   & > svg {
     width: 14px;
     height: 14px;
+  }
+}
+
+@media (min-width: $bp-headers) {
+  .item {
+    display: none;
   }
 }

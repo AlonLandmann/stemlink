@@ -44,7 +44,7 @@ export default function DropDownMenu({ toggleDdm }) {
             <div className={css.icon}><Svg icon='new' /></div>
             <div>create new link</div>
           </div>
-          <div className={css.item} onClick={signOut}>
+          <div className={css.itemLarge} onClick={signOut}>
             <div className={css.icon}><Svg icon='signOut' /></div>
             <div>sign out</div>
           </div>

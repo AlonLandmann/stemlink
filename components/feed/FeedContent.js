@@ -30,7 +30,7 @@ export default function FeedContent({ feed }) {
     <>
       <div className={css.pageTitle}>
         <div>
-          <div>Search Feed</div>
+          <div>Resources</div>
           <div className={cce(filterIsActive, css.filterButton, css.active)} onClick={toggleFilter}>
             filter <Svg icon={ddInView === 'filter' ? 'chevronUp' : 'chevronDown'} />
           </div>

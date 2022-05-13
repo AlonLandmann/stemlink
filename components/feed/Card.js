@@ -58,16 +58,10 @@ export default function Card({ resource }) {
       <div className={css.type}>
         <Svg icon={resource.type} />
       </div>
+
       <div className={css.main}>
         <div className={css.title}>
-          <div>
-            {resource.title}
-          </div>
-          {resource.rating &&
-            <div className={css.rating}>
-              <div>{round(resource.rating, 2)}</div>
-            </div>
-          }
+          {resource.title}
         </div>
         <div className={css.author}>
           {resource.author}
@@ -76,6 +70,12 @@ export default function Card({ resource }) {
           {resource.price > 0 ? `$ ${resource.price}` : 'free'}
         </div>
       </div>
+
+      <div className={css.rating}>
+        <div><Svg icon='rating' /></div>
+        <div>{resource.rating ? round(resource.rating, 2) : '-'}</div>
+      </div>
+
       <div className={saved ? css.saved : css.notSaved} onClick={toggleSave}>
         <div><Svg icon={saved ? 'bookmarkFill' : 'bookmark'} /></div>
         <div>{count}</div>

@@ -9,29 +9,21 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  padding: 12px 20px;
+  padding: 20px 25px;
 }
 .topLine {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 8px;
 }
-.rating {
-  margin-right: auto;
-  border-radius: 3px;
-  padding: 0px 8px;
-  font-size: 0.875rem;
-  color: #568;
-  background: #f0f4ff;
-}
 .delete {
-  margin-right: 12px;
   font-size: 0.8125rem;
   text-decoration: underline;
-  color: #9ac;
+  color: #999;
   cursor: pointer;
   &:hover {
-    color: #78a;
+    color: #888;
   }
 }
 .writtenAtBy {
@@ -47,10 +39,25 @@
   font-size: 0.8125rem;
   color: #777;
 }
+.rating {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-width: 55px;
+  border-left: 1px solid #e0e4ef;
+  border-right: 1px solid #e0e4ef;
+  padding: 8px;
+  font-size: 0.8125rem;
+  color: #555;
+  & Svg {
+    margin-top: 4px;
+  }
+}
 .notUpvoted {
   @include standardNegativeVoteButton;
-  border-right: 1px solid #eee;
-  border-radius: 3px 0px 0px 3px;
+  border-left: 1px solid #eee;
+  border-radius: 0px 3px 3px 0px;
   & Svg {
     width: 18px;
     height: 18px;
@@ -59,7 +66,7 @@
 }
 .upvoted {
   @include standardPositiveVoteButton;
-  border-radius: 3px 0px 0px 3px;
+  border-radius: 0px 3px 3px 0px;
   & Svg {
     width: 18px;
     height: 18px;

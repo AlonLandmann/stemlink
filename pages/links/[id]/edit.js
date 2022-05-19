@@ -1,10 +1,11 @@
-import EditContent from '../../../components/crud/EditContent'
+import EditContent from '../../../components/pages/EditContent'
 import Error from 'next/error'
 import Head from 'next/head'
-import Resource from '../../../mongodb/models/Resource'
+import Header from '../../../components/header/Header'
+import Resource from '../../../db/models/Resource'
 import { useEffect } from 'react'
 import { useSession, signIn } from 'next-auth/react'
-import dbConnect from '../../../mongodb/dbConnect'
+import dbConnect from '../../../db/dbConnect'
 
 export default function Edit({ resourceJson }) {
   const { data: session, status } = useSession()
@@ -25,7 +26,10 @@ export default function Edit({ resourceJson }) {
       <main>
         {status === 'authenticated' &&
           (resource.publishedBy === session.user.email
-            ? <EditContent resource={resource} />
+            ? <>
+                <Header />
+                <EditContent resource={resource} />
+              </>
             : <Error statusCode={403} />
           )
         }

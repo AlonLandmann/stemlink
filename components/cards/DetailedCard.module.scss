@@ -10,88 +10,100 @@
   flex-direction: column;
   justify-content: center;
   flex-grow: 1;
+  padding: 22px 25px;
 }
 .type {
-  padding: 22px 30px 12px;
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  font-size: 0.8125rem;
   & > Svg {
     display: flex;
     width: 20px;
     height: 20px;
   }
+  & > div {
+    color: #999;
+  }
+}
+.editButton {
+  margin-left: auto;
+  text-decoration: underline;
+  cursor: pointer;
+  &:hover {
+    color: #888;
+  }
 }
 .title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 0px 30px;
   font-size: 0.9375rem;
   font-weight: 500;
 }
-.rating {
-  display: flex;
-  align-items: flex-start;
-  & > div {
-    border-radius: 3px;
-    padding: 0px 8px;
-    font-size: 0.875rem;
-    font-weight: 400;
-    color: #568;
-    background: #f0f4ff;
-  }
-}
 .author {
-  padding: 0px 30px 4px;
+  margin-bottom: 14px;
   font-size: 0.75rem;
   color: #bbb;
 }
 .paid {
-  padding: 0px 30px 18px;
+  margin-bottom: 14px;
   font-size: 0.75rem;
-  color: #f26e5c;
+  color: #8a8594;
 }
 .free {
-  padding: 0px 30px 18px;
+  margin-bottom: 14px;
   font-size: 0.75rem;
   color: #3cb043;
 }
 .topicsHeading {
-  padding: 0px 30px 3px;
-  font-size: 0.8125rem;
-  text-decoration: underline;
+  margin-bottom: 6px;
+  font-size: 0.75rem;
+  color: #777;
 }
 .topics {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 0px 24px 18px;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 18px;
   font-size: 0.75rem;
   color: #999;
   & > div {
     max-width: 100%;
+    border-radius: 3px;
     padding: 2px 6px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    background: #f2f2f2;
     cursor: pointer;
     &:hover {
-      background: #eee;
+      background: #e9e9e9;
     }
   }
 }
-.links {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 4px;
-  padding: 0px 30px 22px;
+.link {
   & > div {
+    display: inline-block;
     font-size: 0.8125rem;
     text-decoration: underline;
-    color: #9ac;
+    color: #999;
     cursor: pointer;
     &:hover {
-      color: #78a;
+      color: #888;
     }
+  }
+}
+.rating {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-width: 55px;
+  border-left: 1px solid #e0e4ef;
+  border-right: 1px solid #e0e4ef;
+  padding: 8px;
+  font-size: 0.8125rem;
+  color: #555;
+  & Svg {
+    margin-top: 4px;
   }
 }
 .notSaved {

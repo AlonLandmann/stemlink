@@ -1,13 +1,15 @@
-import { postResource } from '../../mongodb/api/client'
+import Loader from '../Loader'
+import { postResource } from '../../db/api/resource'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { useState, useEffect } from 'react'
 import cce from '../../lib/cce'
-import css from './NewContent.module.scss'
+import css from './NewForm.module.scss'
 import toast from 'react-hot-toast'
 import types from '../../lib/types'
+import validateResource from '../../lib/validateResource'
 
-export default function NewContent() {
+export default function NewForm() {
   const [formData, setFormData] = useState({
     href: '',
     type: 'video',
@@ -17,67 +19,37 @@ export default function NewContent() {
     topics: ['']
   })
   const [errors, setErrors] = useState({})
-  const [submitting, setSubmitting] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const { data: session } = useSession()
   const router = useRouter()
 
   useEffect(() => {
-    if (submitting) {
+    if (isSubmitting) {
       if (Object.keys(errors).length === 0) {
         makePostRequest()
-      }
-
-      setSubmitting(false)
-    }
-  }, [errors])
-
-  // helper functions
-  function validate() {
-    let errs = {}
-
-    // href
-    const urlRegEx = /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)/
-    if (!urlRegEx.test(formData.href)) {
-      errs.href = 'The url provided is invalid'
-    } else if (!/^https:\/\//.test(formData.href)) {
-      errs.href = 'Only pages using the https protocol are allowed'
-    }
-
-    // title
-    if (formData.title.length < 3 || formData.title.length > 100) {
-      errs.title = 'Title needs to have between 3 and 100 characters'
-    }
-
-    // Author
-    if (formData.author.length < 3 || formData.author.length > 100) {
-      errs.author = 'Author needs to have between 3 and 100 characters'
-    }
-
-    // Price
-    if (formData.price === '') {
-      errs.price = 'Please enter a price. You can enter zero for free resources.'
-    } else if (formData.price < 0) {
-      errs.price = 'Only non-negative prices are allowed'
-    } else if (Math.round(formData.price * 100) !== formData.price * 100) {
-      errs.price = 'Only two decimal places are allowed in giving the price'
-    }
-
-    // Topics
-    if (formData.topics.length === 1 && formData.topics[0] === '') {
-      errs.topics = 'At least one topic needs to be provided'
-    } else if (formData.topics.length > 4) {
-      errs.topics = 'At most four topics can be given to any one link'
-    } else {
-      for (let i = 0; i < formData.topics.length; i++) {
-        const tp = formData.topics[i]
-        if (tp.length < 3 || tp.length > 100) {
-          errs.topics = 'Topics need to have between 3 and 100 characters'
-        }
+      } else {
+        setIsSubmitting(false)
       }
     }
+  }, [isSubmitting])
 
-    return errs;
+  function handleChange(event) {
+    const { name, value } = event.target
+
+    setFormData(prevFormData => ({
+      ...prevFormData,
+      [name]: name === 'topics' ? value.split(', ') : value
+    }))
   }
+  function handleSubmit(event) {
+    event.preventDefault()
+
+    if (!isSubmitting) {
+      setErrors(validateResource(formData))
+      setIsSubmitting(true)
+    }
+  }
+
   function createNewResource() {
     return {
       ...formData,
@@ -89,10 +61,9 @@ export default function NewContent() {
   function makePostRequest() {
     async function executeApiCalls() {
       try {
-        const resourceData = createNewResource()
-        const resource = await postResource(resourceData)
+        const success = await postResource(createNewResource())
 
-        if (resource) {
+        if (success) {
           return true
         }
 
@@ -108,37 +79,19 @@ export default function NewContent() {
         router.push('/')
       } else {
         toast.error('Something went wrong')
+        setIsSubmitting(false)
       }
     })
   }
 
-  // user inputs
-  function handleChange(event) {
-    const { name, value } = event.target
-
-    setFormData(prevFormData => ({
-      ...prevFormData,
-      [name]: name === 'topics' ? value.split(', ') : value
-    }))
-  }
-  function handleSubmit(event) {
-    event.preventDefault()
-
-    if (!submitting) {
-      setErrors(validate())
-      setSubmitting(true)
-    }
-  }
-
   return (
-    <div>
-      <div className={css.pageTitle}>
-        <div>
-          Create a new link
-        </div>
-      </div>
-      <div className={css.formContainer}>
+    <div className={css.formContainer}>
+      {!isSubmitting &&
         <form className={css.form} onSubmit={handleSubmit}>
+          <div className={css.formTitle}>
+            Share a new resource
+          </div>
+
           <div>
             {errors.href &&
               <div className={css.errorMessage}>
@@ -254,11 +207,20 @@ export default function NewContent() {
               />
             </div>
           </div>
+
           <div className={css.buttonContainer}>
-            <button type='submit'>Post new link</button>
+            <button type='submit'>
+              Post new link
+            </button>
           </div>
         </form>
-      </div>
+      }
+
+      {isSubmitting &&
+        <div className={css.submissionLoaderContainer}>
+          <Loader show={isSubmitting} />
+        </div>
+      }
     </div>
   )
 }

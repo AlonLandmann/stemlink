@@ -1,6 +1,6 @@
-import File from '../../../mongodb/models/File'
+import File from '../../../db/models/File'
 import { getSession } from 'next-auth/react'
-import dbConnect from '../../../mongodb/dbConnect'
+import dbConnect from '../../../db/dbConnect'
 
 dbConnect()
 

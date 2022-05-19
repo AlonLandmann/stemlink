@@ -1,11 +1,12 @@
-import File from '../../../mongodb/models/File'
+import File from '../../../db/models/File'
 import Head from 'next/head'
-import InfoContent from '../../../components/info/InfoContent'
-import Resource from '../../../mongodb/models/Resource'
-import Review from '../../../mongodb/models/Review'
-import { getFile } from '../../../mongodb/api/client'
+import Header from '../../../components/header/Header'
+import InfoContent from '../../../components/pages/InfoContent'
+import Resource from '../../../db/models/Resource'
+import Review from '../../../db/models/Review'
+import { getFile } from '../../../db/api/file'
 import { getSession } from 'next-auth/react'
-import dbConnect from '../../../mongodb/dbConnect'
+import dbConnect from '../../../db/dbConnect'
 import reverse from 'lodash/reverse'
 import sortBy from 'lodash/sortBy'
 
@@ -17,6 +18,7 @@ export default function Info({ resourceJson }) {
       </Head>
 
       <main>
+        <Header />
         <InfoContent resource={JSON.parse(resourceJson)} />
       </main>
     </>

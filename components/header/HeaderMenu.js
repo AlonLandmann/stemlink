@@ -24,8 +24,6 @@ export default function HeaderMenu({ setDdmInView, toggleDdm }) {
     router.push(`${router.basePath}/links/new`)
   }
 
-  console.log(session && session.user.image);
-
   return (
     <div className={css.container}>
       <div className={css.link} onClick={linkToTop}>top</div>

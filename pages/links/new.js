@@ -1,5 +1,6 @@
 import Head from 'next/head'
-import NewContent from '../../components/crud/NewContent'
+import Header from '../../components/header/Header'
+import NewContent from '../../components/pages/NewContent'
 import { useEffect } from 'react'
 import { useSession, signIn } from 'next-auth/react'
 
@@ -20,7 +21,10 @@ export default function New() {
 
       <main>
         {status === 'authenticated' &&
-          <NewContent />
+          <>
+            <Header />
+            <NewContent />
+          </>
         }
       </main>
     </>

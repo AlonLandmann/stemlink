@@ -34,7 +34,9 @@ export default function Header() {
         </div>
       </div>
 
-      {ddmInView && <DropDownMenu toggleDdm={toggleDdm} />}
+      {ddmInView &&
+        <DropDownMenu toggleDdm={toggleDdm} />
+      }
     </>
   )
 }

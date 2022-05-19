@@ -1,11 +1,11 @@
 import Svg from '../Svg'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import css from './SearchBar.module.scss'
 
 export default function SearchBar() {
-  const [searchString, setSearchString] = useState('')
   const router = useRouter()
+  const [searchString, setSearchString] = useState(router.query.str || '')
 
   function handleChange(event) {
     setSearchString(event.target.value)

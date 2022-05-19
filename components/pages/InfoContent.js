@@ -1,7 +1,7 @@
-import DetailedCard from './DetailedCard'
-import ReviewCard from './ReviewCard'
-import ReviewForm from './ReviewForm'
-import ReviewSort from './ReviewSort'
+import DetailedCard from '../cards/DetailedCard'
+import ReviewCard from '../cards/ReviewCard'
+import ReviewForm from '../forms/ReviewForm'
+import ReviewSort from '../collation/ReviewSort'
 import Svg from '../Svg'
 import { useSession } from 'next-auth/react'
 import { useState } from 'react'
@@ -21,7 +21,7 @@ export default function InfoContent({ resource }) {
     <>
       <div className={css.pageTitle}>
         <div>
-          <div>Review Page</div>
+          <div>Reviews</div>
           <div className={cce(sortIsActive, css.sortButton, css.active)} onClick={toggleSort}>
             sort <Svg icon={sortInView ? 'chevronUp' : 'chevronDown'} />
           </div>
@@ -51,9 +51,7 @@ export default function InfoContent({ resource }) {
         {session && !resource.reviewedByUser &&
           <>
             <div className={css.separator}><div></div></div>
-            <div className={css.reviewFormContainer}>
-              <ReviewForm resource={resource} />
-            </div>
+            <ReviewForm resource={resource} />
           </>
         }
       </div>

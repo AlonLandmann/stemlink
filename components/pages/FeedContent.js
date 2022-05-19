@@ -1,6 +1,6 @@
-import Card from './Card'
-import FeedFilter from './FeedFilter'
-import FeedSort from './FeedSort'
+import FeedCard from '../cards/FeedCard'
+import FeedFilter from '../collation/FeedFilter'
+import FeedSort from '../collation/FeedSort'
 import Svg from '../Svg'
 import { useState } from 'react'
 import cce from '../../lib/cce'
@@ -52,9 +52,14 @@ export default function FeedContent({ feed }) {
       }
       <div className={css.feedContainer}>
         {feed.map(resource => (
-          <Card key={resource._id} resource={resource} />
+          <FeedCard key={resource._id} resource={resource} />
         ))}
       </div>
+      {feed.length === 0 &&
+        <div className={css.noMatch}>
+          There are no matching resources
+        </div>
+      }
     </>
   )
 }

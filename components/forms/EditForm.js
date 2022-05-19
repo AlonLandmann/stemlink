@@ -1,13 +1,15 @@
-import { putResource } from '../../mongodb/api/client'
+import Loader from '../Loader'
+import { deleteResource, putResource } from '../../db/api/resource'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { useState, useEffect } from 'react'
 import cce from '../../lib/cce'
-import css from './EditContent.module.scss'
+import css from './EditForm.module.scss'
 import toast from 'react-hot-toast'
 import types from '../../lib/types'
+import validateResource from '../../lib/validateResource'
 
-export default function EditContent({ resource }) {
+export default function EditForm({ resource }) {
   const [formData, setFormData] = useState({
     href: resource.href,
     type: resource.type,
@@ -17,57 +19,63 @@ export default function EditContent({ resource }) {
     topics: resource.topics
   })
   const [errors, setErrors] = useState({})
-  const [submitting, setSubmitting] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const { data: session } = useSession()
   const router = useRouter()
 
   useEffect(() => {
-    if (submitting) {
+    if (isSubmitting) {
       if (Object.keys(errors).length === 0) {
         makePutRequest()
+      } else {
+        setIsSubmitting(false)
       }
-
-      setSubmitting(false)
     }
-  }, [errors])
+  }, [isSubmitting])
 
-  // helper functions
-  function validate() {
-    let errs = {}
+  function handleChange(event) {
+    const { name, value } = event.target
 
-    // title
-    if (formData.title.length < 3 || formData.title.length > 100) {
-      errs.title = 'Title needs to have between 3 and 100 characters'
+    setFormData(prevFormData => ({
+      ...prevFormData,
+      [name]: name === 'topics' ? value.split(', ') : value
+    }))
+  }
+  function handleSubmit(event) {
+    event.preventDefault()
+
+    if (!isSubmitting) {
+      setErrors(validateResource(formData))
+      setIsSubmitting(true)
     }
+  }
+  function handleDelete() {
+    if (confirm('Are you sure you want to delete this link?')) {
+      async function executeApiCalls() {
+        try {
+          const success = await deleteResource(resource)
 
-    // Author
-    if (formData.author.length < 3 || formData.author.length > 100) {
-      errs.author = 'Author needs to have between 3 and 100 characters'
-    }
+          if (success) {
+            return true
+          }
 
-    // Price
-    if (formData.price < 0) {
-      errs.price = 'Only non-negative prices are allowed'
-    } else if (Math.round(formData.price * 100) !== formData.price * 100) {
-      errs.price = 'Only two decimal places are allowed in giving the price'
-    }
-
-    // Topics
-    if (formData.topics.length === 1 && formData.topics[0] === '') {
-      errs.topics = 'At least one topic needs to be provided'
-    } else if (formData.topics.length > 4) {
-      errs.topics = 'At most four topics can be given to any one link'
-    } else {
-      for (let i = 0; i < formData.topics.length; i++) {
-        const tp = formData.topics[i]
-        if (tp.length < 3 || tp.length > 100) {
-          errs.topics = 'Topics need to have between 3 and 100 characters'
+          return false
+        } catch (err) {
+          return false
         }
       }
-    }
 
-    return errs;
+      executeApiCalls().then(success => {
+        if (success) {
+          toast.success('Your link has been successfully deleted!')
+          router.push('/')
+        } else {
+          toast.error('Something went wrong')
+        }
+      })
+    }
   }
+
   function createUpdatedResource() {
     return {
       ...resource,
@@ -77,8 +85,7 @@ export default function EditContent({ resource }) {
   function makePutRequest() {
     async function executeApiCalls() {
       try {
-        const updatedResource = createUpdatedResource()
-        const success = await putResource(updatedResource)
+        const success = await putResource(createUpdatedResource())
 
         if (success) {
           return true
@@ -96,37 +103,19 @@ export default function EditContent({ resource }) {
         router.push('/')
       } else {
         toast.error('Something went wrong')
+        setIsSubmitting(false)
       }
     })
   }
 
-  // user inputs
-  function handleChange(event) {
-    const { name, value } = event.target
-
-    setFormData(prevFormData => ({
-      ...prevFormData,
-      [name]: name === 'topics' ? value.split(', ') : value
-    }))
-  }
-  function handleSubmit(event) {
-    event.preventDefault()
-
-    if (!submitting) {
-      setErrors(validate())
-      setSubmitting(true)
-    }
-  }
-
   return (
-    <div>
-      <div className={css.pageTitle}>
-        <div>
-          Edit link
-        </div>
-      </div>
-      <div className={css.formContainer}>
+    <div className={css.formContainer}>
+      {!isSubmitting &&
         <form className={css.form} onSubmit={handleSubmit}>
+          <div className={css.formTitle}>
+            Edit resource information
+          </div>
+
           <div>
             <div className={css.inputGroup}>
               <label htmlFor='href'>URL</label>
@@ -235,11 +224,23 @@ export default function EditContent({ resource }) {
               />
             </div>
           </div>
+
           <div className={css.buttonContainer}>
-            <button type='submit'>Edit link</button>
+            <button type='submit'>
+              Edit link
+            </button>
+            <button type='button' className={css.deleteButton} onClick={handleDelete}>
+              Delete link
+            </button>
           </div>
         </form>
-      </div>
+      }
+
+      {isSubmitting &&
+        <div className={css.submissionLoaderContainer}>
+          <Loader show={isSubmitting} />
+        </div>
+      }
     </div>
   )
 }

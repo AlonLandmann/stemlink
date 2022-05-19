@@ -1,9 +1,10 @@
-import FeedContent from '../components/feed/FeedContent'
-import File from '../mongodb/models/File'
+import FeedContent from '../components/pages/FeedContent'
+import File from '../db/models/File'
 import Head from 'next/head'
-import Resource from '../mongodb/models/Resource'
+import Header from '../components/header/Header'
+import Resource from '../db/models/Resource'
 import { getSession } from 'next-auth/react'
-import dbConnect from '../mongodb/dbConnect'
+import dbConnect from '../db/dbConnect'
 
 export default function Search({ feedJson }) {
   return (
@@ -13,6 +14,7 @@ export default function Search({ feedJson }) {
       </Head>
 
       <main>
+        <Header />
         <FeedContent feed={JSON.parse(feedJson)} />
       </main>
     </>

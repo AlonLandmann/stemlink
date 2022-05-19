@@ -1,6 +1,6 @@
-import Review from '../../../mongodb/models/Review'
+import Review from '../../../db/models/Review'
 import { getSession } from 'next-auth/react'
-import dbConnect from '../../../mongodb/dbConnect'
+import dbConnect from '../../../db/dbConnect'
 
 dbConnect()
 

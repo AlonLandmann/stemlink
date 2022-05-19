@@ -1,6 +1,6 @@
-import Resource from '../../../mongodb/models/Resource'
+import Resource from '../../../db/models/Resource'
 import { getSession } from 'next-auth/react'
-import dbConnect from '../../../mongodb/dbConnect'
+import dbConnect from '../../../db/dbConnect'
 
 dbConnect()
 

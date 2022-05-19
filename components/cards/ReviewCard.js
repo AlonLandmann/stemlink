@@ -1,5 +1,5 @@
 import Svg from '../Svg'
-import { deleteReview, getReview, putReview } from '../../mongodb/api/client'
+import { deleteReview, getReview, putReview } from '../../db/api/review'
 import { useSession, signIn } from 'next-auth/react'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
@@ -13,20 +13,6 @@ export default function ReviewCard({ review }) {
   const { data: session } = useSession()
   const router = useRouter()
 
-  function createUpdatedReviewWithNewUpvote(review) {
-    return {
-      ...review,
-      upvotedBy: [...review.upvotedBy, session.user.email]
-    }
-  }
-  function createUpdatedReviewWithoutUpvote(review) {
-    let updatedReview = { ...review }
-    let index = updatedReview.upvotedBy.indexOf(session.user.email)
-
-    updatedReview.upvotedBy.splice(index, 1)
-
-    return updatedReview
-  }
   function handleDelete() {
     if (confirm('Are you sure you want to delete this review?')) {
       async function executeApiCalls() {
@@ -75,25 +61,33 @@ export default function ReviewCard({ review }) {
     }
   }
 
+  function createUpdatedReviewWithNewUpvote(review) {
+    return {
+      ...review,
+      upvotedBy: [...review.upvotedBy, session.user.email]
+    }
+  }
+  function createUpdatedReviewWithoutUpvote(review) {
+    let updatedReview = { ...review }
+    let index = updatedReview.upvotedBy.indexOf(session.user.email)
+
+    updatedReview.upvotedBy.splice(index, 1)
+
+    return updatedReview
+  }
+
   return (
     <div className={css.card}>
-      <div className={upvoted ? css.upvoted : css.notUpvoted} onClick={toggleUpvote}>
-        <div><Svg icon={upvoted ? 'upvoteFill' : 'upvote'} /></div>
-        <div>{count}</div>
-      </div>
       <div className={css.main}>
         <div className={css.topLine}>
-          <div className={css.rating}>
-            {review.rating}
+          <div className={css.writtenAtBy}>
+            {ago(new Date(review.writtenAt))}
           </div>
           {session && session.user.email === review.writtenBy &&
             <div className={css.delete} onClick={handleDelete}>
               delete
             </div>
           }
-          <div className={css.writtenAtBy}>
-            {ago(new Date(review.writtenAt))}
-          </div>
         </div>
         <div className={css.title}>
           {review.title}
@@ -101,6 +95,14 @@ export default function ReviewCard({ review }) {
         <div className={css.content}>
           {review.content}
         </div>
+      </div>
+      <div className={css.rating}>
+        <div><Svg icon='rating' /></div>
+        <div>{review.rating}</div>
+      </div>
+      <div className={upvoted ? css.upvoted : css.notUpvoted} onClick={toggleUpvote}>
+        <div><Svg icon={upvoted ? 'upvoteFill' : 'upvote'} /></div>
+        <div>{count}</div>
       </div>
     </div>
   )

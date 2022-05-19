@@ -37,7 +37,7 @@
 }
 .paid {
   font-size: 0.75rem;
-  color: #f26e5c;
+  color: #8a8594;
 }
 .free {
   font-size: 0.75rem;
@@ -49,14 +49,11 @@
   align-items: center;
   flex-direction: column;
   min-width: 55px;
-  // border-left: 1px solid #e0e4ef;
-  // border-right: 1px solid #e0e4ef;
   border-left: 1px solid #e0e4ef;
   border-right: 1px solid #e0e4ef;
   padding: 8px;
   font-size: 0.8125rem;
   color: #555;
-  // background: #f0f4ff;
   & Svg {
     margin-top: 4px;
   }

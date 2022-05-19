@@ -1,31 +1,17 @@
 import Svg from '../Svg'
-import { getFile, putFile } from '../../mongodb/api/client'
+import { getFile, putFile } from '../../db/api/file'
 import { useRouter } from 'next/router'
 import { useSession, signIn } from 'next-auth/react'
 import { useState } from 'react'
-import css from './Card.module.scss'
+import css from './FeedCard.module.scss'
 import round from '../../lib/round'
 
-export default function Card({ resource }) {
+export default function FeedCard({ resource }) {
   const [saved, setSaved] = useState(resource.saved)
   const [count, setCount] = useState(resource.count)
   const { data: session } = useSession()
   const router = useRouter()
 
-  function createUpdatedFileWithNewSave(file, resource) {
-    return {
-      ...file,
-      savedLinks: [...file.savedLinks, resource._id]
-    }
-  }
-  function createUpdatedFileWithoutSave(file, resource) {
-    let updatedFile = { ...file }
-    let index = updatedFile.savedLinks.indexOf(resource._id)
-
-    updatedFile.savedLinks.splice(index, 1)
-
-    return updatedFile
-  }
   function handleClick() {
     router.push(`../links/${resource._id}`)
   }
@@ -34,8 +20,8 @@ export default function Card({ resource }) {
     event.stopPropagation()
 
     if (session) {
-      setCount(prevCount => saved ? prevCount - 1 : prevCount + 1)
       setSaved(prevSaved => !prevSaved)
+      setCount(prevCount => saved ? prevCount - 1 : prevCount + 1)
 
       try {
         const file = await getFile(session.user.email)
@@ -53,12 +39,26 @@ export default function Card({ resource }) {
     }
   }
 
+  function createUpdatedFileWithNewSave(file, resource) {
+    return {
+      ...file,
+      savedLinks: [...file.savedLinks, resource._id]
+    }
+  }
+  function createUpdatedFileWithoutSave(file, resource) {
+    let updatedFile = { ...file }
+    let index = updatedFile.savedLinks.indexOf(resource._id)
+
+    updatedFile.savedLinks.splice(index, 1)
+
+    return updatedFile
+  }
+
   return (
     <div className={css.card} onClick={handleClick}>
       <div className={css.type}>
         <Svg icon={resource.type} />
       </div>
-
       <div className={css.main}>
         <div className={css.title}>
           {resource.title}
@@ -67,15 +67,13 @@ export default function Card({ resource }) {
           {resource.author}
         </div>
         <div className={resource.price > 0 ? css.paid : css.free}>
-          {resource.price > 0 ? `$ ${resource.price}` : 'free'}
+          {resource.price > 0 ? `$ ${round(resource.price, 0)}` : 'free'}
         </div>
       </div>
-
       <div className={css.rating}>
         <div><Svg icon='rating' /></div>
-        <div>{resource.rating ? round(resource.rating, 2) : '-'}</div>
+        <div>{resource.rating ? round(resource.rating, 1) : '-'}</div>
       </div>
-
       <div className={saved ? css.saved : css.notSaved} onClick={toggleSave}>
         <div><Svg icon={saved ? 'bookmarkFill' : 'bookmark'} /></div>
         <div>{count}</div>

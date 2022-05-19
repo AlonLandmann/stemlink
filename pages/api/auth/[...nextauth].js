@@ -2,7 +2,7 @@ import GithubProvider from 'next-auth/providers/github'
 import GoogleProvider from 'next-auth/providers/google'
 import NextAuth from 'next-auth'
 import { MongoDBAdapter } from '@next-auth/mongodb-adapter'
-import clientPromise from '../../../mongodb/dbAuth'
+import clientPromise from '../../../db/dbConnectAuth'
 
 export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,

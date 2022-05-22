@@ -1,0 +1,23 @@
+@import '../../styles/forms';
+
+.formContainer {
+  padding: 22px 8px 30px;
+}
+.form {
+  @include form;
+}
+.formTitle {
+  @include formTitle;
+}
+.inputGroup {
+  @include formInputGroup;
+}
+.errorMessage {
+  @include formErrorMessage;
+}
+.buttonContainer {
+  @include formButtonContainer;
+}
+.submissionLoaderContainer {
+  @include formSubmissionLoaderContainer;
+}

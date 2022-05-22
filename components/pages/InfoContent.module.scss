@@ -1,17 +1,17 @@
-@import '../../styles/mixins';
 @import '../../styles/variables';
 
-.pageTitle {
-  @include standardPageTitle;
-}
-.sortButton {
-  @include standardDropDownButton;
-  margin-left: auto;
-  border-right: 1px solid #ddd;
-}
-.mainContainer {
+.infoContainer {
   max-width: $bp-content;
   margin: auto;
+}
+.resourceCardContainer {
+  padding: 8px 8px 22px;
+}
+.reviewCardContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 22px 8px;
 }
 .separator {
   display: flex;
@@ -21,13 +21,4 @@
     width: 10%;
     border-top: 3px dotted #ddd;
   }
-}
-.detailedCard {
-  padding: 8px 8px 22px;
-}
-.reviewContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 22px 8px;
 }

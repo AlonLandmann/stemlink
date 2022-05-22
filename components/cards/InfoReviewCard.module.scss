@@ -1,0 +1,56 @@
+@import '../../styles/cards';
+
+.card {
+  @include card;
+}
+.rating {
+  @include cardRating;
+}
+.notUpvoted {
+  @include cardToggleButtonOff;
+  & Svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+.upvoted {
+  @include cardToggleButtonOn;
+  & Svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+.main {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 22px 25px;
+}
+.topLine {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.delete {
+  font-size: 0.8125rem;
+  text-decoration: underline;
+  color: #999;
+  cursor: pointer;
+  &:hover {
+    color: #888;
+  }
+}
+.writtenAtBy {
+  font-size: 0.75rem;
+  color: #bbb;
+}
+.title {
+  margin-bottom: 2px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+.content {
+  font-size: 0.8125rem;
+  color: #777;
+}

@@ -1,11 +1,14 @@
-@import '../../styles/mixins';
+@import '../../styles/collation';
 
-.dropDownArea {
-  @include standardDropDownArea;
+.collationDropDown {
+  @include collationDropDown;
 }
-.itemContainer {
-  @include standardDropDownItemContainer;
+.collationHeading {
+  @include collationHeading;
 }
-.item {
-  @include standardDropDownItem;
+.collationGroup {
+  @include collationGroup;
+}
+.collationButtonContainer {
+  @include collationButtonContainer;
 }

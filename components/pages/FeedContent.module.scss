@@ -1,17 +1,5 @@
-@import '../../styles/mixins';
 @import '../../styles/variables';
 
-.pageTitle {
-  @include standardPageTitle;
-}
-.filterButton {
-  @include standardDropDownButton;
-  margin-left: auto;
-}
-.sortButton {
-  @include standardDropDownButton;
-  border-right: 1px solid #ddd;
-}
 .feedContainer {
   display: flex;
   flex-direction: column;
@@ -20,8 +8,14 @@
   margin: auto;
   padding: 8px;
 }
-.noMatch {
-  padding: 22px 8px;
+.loadMore {
+  display: flex;
+  justify-content: center;
+  padding: 30px 8px 40px;
+}
+.noMatchFound,
+.endOfFeed {
+  padding: 20px 8px 40px;
   font-size: 0.8125rem;
   text-align: center;
   color: #bbb;

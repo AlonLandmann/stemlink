@@ -1,0 +1,33 @@
+@import '../../styles/variables';
+@import '../../styles/forms';
+
+.formContainer {
+  max-width: $bp-content;
+  margin: auto;
+  padding: 8px;
+}
+.form {
+  @include form;
+}
+.formTitle {
+  @include formTitle;
+}
+.inputGroup {
+  @include formInputGroup;
+}
+.errorMessage {
+  @include formErrorMessage;
+}
+.buttonContainer {
+  @include formButtonContainer;
+}
+.submissionLoaderContainer {
+  @include formSubmissionLoaderContainer;
+}
+.deleteButton {
+  border: 1px solid #dc4f4f;
+  color: #dc4f4f;
+  &:hover {
+    background: #fff4f4;
+  }
+}

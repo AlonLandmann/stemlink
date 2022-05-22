@@ -1,15 +1,18 @@
+import FormInput from './FormInput'
+import FormTextarea from './FormTextarea'
 import Loader from '../Loader'
-import { deleteResource, putResource } from '../../db/api/resource'
+import { deleteResource, putResource } from '../../db/client/resource'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { useState, useEffect } from 'react'
-import cce from '../../lib/cce'
-import css from './EditForm.module.scss'
+import css from './EditResourceForm.module.scss'
 import toast from 'react-hot-toast'
 import types from '../../lib/types'
 import validateResource from '../../lib/validateResource'
 
 export default function EditForm({ resource }) {
+  const router = useRouter()
+  const { data: session } = useSession()
   const [formData, setFormData] = useState({
     href: resource.href,
     type: resource.type,
@@ -20,8 +23,6 @@ export default function EditForm({ resource }) {
   })
   const [errors, setErrors] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const { data: session } = useSession()
-  const router = useRouter()
 
   useEffect(() => {
     if (isSubmitting) {
@@ -71,6 +72,7 @@ export default function EditForm({ resource }) {
           router.push('/')
         } else {
           toast.error('Something went wrong')
+          setIsSubmitting(false)
         }
       })
     }
@@ -112,9 +114,7 @@ export default function EditForm({ resource }) {
     <div className={css.formContainer}>
       {!isSubmitting &&
         <form className={css.form} onSubmit={handleSubmit}>
-          <div className={css.formTitle}>
-            Edit resource information
-          </div>
+          <div className={css.formTitle}>Edit resource information</div>
 
           <div>
             <div className={css.inputGroup}>
@@ -148,87 +148,44 @@ export default function EditForm({ resource }) {
               </select>
             </div>
           </div>
-          <div>
-            {errors.title &&
-              <div className={css.errorMessage}>
-                {errors.title}
-              </div>
-            }
-            <div className={cce(errors.title, css.inputGroup, css.hasError)}>
-              <label htmlFor='title'>Title</label>
-              <input
-                id='title'
-                name='title'
-                type='text'
-                placeholder='Title'
-                autoComplete='off'
-                value={formData.title}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-          <div>
-            {errors.author &&
-              <div className={css.errorMessage}>
-                {errors.author}
-              </div>
-            }
-            <div className={cce(errors.author, css.inputGroup, css.hasError)}>
-              <label htmlFor='author'>Author</label>
-              <input
-                id='author'
-                name='author'
-                type='text'
-                placeholder='Author'
-                autoComplete='off'
-                value={formData.author}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-          <div>
-            {errors.price &&
-              <div className={css.errorMessage}>
-                {errors.price}
-              </div>
-            }
-            <div className={cce(errors.price, css.inputGroup, css.hasError)}>
-              <label htmlFor='price'>Price</label>
-              <input
-                id='price'
-                name='price'
-                type='number'
-                placeholder='Price'
-                autoComplete='off'
-                value={formData.price}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-          <div>
-            {errors.topics &&
-              <div className={css.errorMessage}>
-                {errors.topics}
-              </div>
-            }
-            <div className={cce(errors.topics, css.inputGroup, css.hasError)}>
-              <label htmlFor='topics'>Topics</label>
-              <textarea
-                id='topics'
-                name='topics'
-                placeholder='Topic 1, Topic 2, Topic 3'
-                autoComplete='off'
-                rows='4'
-                value={formData.topics.join(', ')}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
+          <FormInput
+            id='title'
+            label='Title'
+            type='text'
+            placeholder='Title'
+            value={formData.title}
+            onChange={handleChange}
+            error={errors.title}
+          />
+          <FormInput
+            id='author'
+            label='Author'
+            type='text'
+            placeholder='Author'
+            value={formData.author}
+            onChange={handleChange}
+            error={errors.author}
+          />
+          <FormInput
+            id='price'
+            label='Price'
+            type='number'
+            placeholder='Price'
+            value={formData.price}
+            onChange={handleChange}
+            error={errors.price}
+          />
+          <FormTextarea
+            id='topics'
+            label='Topics'
+            placeholder='Topic 1, Topic 2, Topic 3'
+            rows='4'
+            value={formData.topics.join(', ')}
+            onChange={handleChange}
+          />
 
           <div className={css.buttonContainer}>
-            <button type='submit'>
-              Edit link
-            </button>
+            <button type='submit'>Edit link</button>
             <button type='button' className={css.deleteButton} onClick={handleDelete}>
               Delete link
             </button>

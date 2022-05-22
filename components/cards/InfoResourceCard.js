@@ -1,27 +1,26 @@
-import Link from 'next/link'
 import Svg from '../Svg'
-import { getFile, putFile } from '../../db/api/file'
+import { getFile, putFile } from '../../db/client/file'
+import { useRouter } from 'next/router'
 import { useSession, signIn } from 'next-auth/react'
 import { useState } from 'react'
-import { useRouter } from 'next/router'
-import css from './DetailedCard.module.scss'
+import css from './InfoResourceCard.module.scss'
 import round from '../../lib/round'
 import toast from 'react-hot-toast'
 import types from '../../lib/types'
 
-export default function DetailedCard({ resource }) {
+export default function InfoResourceCard({ resource }) {
+  const router = useRouter()
+  const { data: session } = useSession()
   const [saved, setSaved] = useState(resource.saved)
   const [count, setCount] = useState(resource.count)
-  const { data: session } = useSession()
-  const router = useRouter()
 
+  function handleEdit() {
+    router.push(`/links/${router.query.id}/edit`)
+  }
   function handleTopicSearch(event) {
     const newStr = event.currentTarget.innerText.replace(/ /g, '_')
 
-    window.location.replace(`${router.basePath}/search?str=${newStr}`)
-  }
-  function handleEdit() {
-    router.push(`/links/${router.query.id}/edit`)
+    window.location.replace(`${router.basePath}/feed?str=${newStr}`)
   }
   function handleGoToResource() {
     switch (resource.safetyStatus) {
@@ -57,36 +56,36 @@ export default function DetailedCard({ resource }) {
     }
   }
 
-  async function toggleSave(event) {
+  async function handleSave(event) {
     event.stopPropagation()
 
     if (session) {
-      setCount(prevCount => saved ? prevCount - 1 : prevCount + 1)
-      setSaved(prevSaved => !prevSaved)
-
       try {
+        setCount(prevCount => saved ? prevCount - 1 : prevCount + 1)
+        setSaved(prevSaved => !prevSaved)
+
         const file = await getFile(session.user.email)
 
         if (file.savedLinks.indexOf(resource._id) > -1) {
-          await putFile(createUpdatedFileWithoutSave(file, resource))
+          await putFile(createFileWithoutSave(file, resource))
         } else {
-          await putFile(createUpdatedFileWithNewSave(file, resource))
+          await putFile(createFileWithNewSave(file, resource))
         }
       } catch (err) {
-        console.log(err)
+        console.error(err)
       }
     } else {
       signIn()
     }
   }
 
-  function createUpdatedFileWithNewSave(file, resource) {
+  function createFileWithNewSave(file, resource) {
     return {
       ...file,
       savedLinks: [...file.savedLinks, resource._id]
     }
   }
-  function createUpdatedFileWithoutSave(file, resource) {
+  function createFileWithoutSave(file, resource) {
     let updatedFile = { ...file }
     let index = updatedFile.savedLinks.indexOf(resource._id)
 
@@ -109,12 +108,8 @@ export default function DetailedCard({ resource }) {
             </div>
           }
         </div>
-        <div className={css.title}>
-          {resource.title}
-        </div>
-        <div className={css.author}>
-          {resource.author}
-        </div>
+        <div className={css.title}>{resource.title}</div>
+        <div className={css.author}>{resource.author}</div>
         <div className={resource.price > 0 ? css.paid : css.free}>
           {resource.price > 0 ? `$ ${resource.price}` : 'free'}
         </div>
@@ -132,9 +127,9 @@ export default function DetailedCard({ resource }) {
       </div>
       <div className={css.rating}>
         <div><Svg icon='rating' /></div>
-        <div>{resource.rating ? round(resource.rating, 2) : '-'}</div>
+        <div>{resource.rating ? round(resource.rating, 1) : '-'}</div>
       </div>
-      <div className={saved ? css.saved : css.notSaved} onClick={toggleSave}>
+      <div className={saved ? css.saved : css.notSaved} onClick={handleSave}>
         <div><Svg icon={saved ? 'bookmarkFill' : 'bookmark'} /></div>
         <div>{count}</div>
       </div>

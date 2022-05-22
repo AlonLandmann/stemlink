@@ -1,5 +1,5 @@
-import DropDownMenu from './DropDownMenu'
-import HeaderMenu from './HeaderMenu'
+import MenuDropDown from './MenuDropDown'
+import MenuHeader from './MenuHeader'
 import SearchBar from './SearchBar'
 import Svg from '../Svg'
 import { useRouter } from 'next/router'
@@ -7,14 +7,14 @@ import { useState } from 'react'
 import css from './Header.module.scss'
 
 export default function Header() {
-  const [ddmInView, setDdmInView] = useState(false)
   const router = useRouter()
+  const [ddmInView, setDdmInView] = useState(false)
 
-  function linkToHome() {
+  function handleLinkToHome() {
     setDdmInView(false)
     router.push('/')
   }
-  function toggleDdm() {
+  function handleDdmToggle() {
     setDdmInView(prevDdmInView => !prevDdmInView)
   }
 
@@ -22,20 +22,18 @@ export default function Header() {
     <>
       <div className={css.container}>
         <div className={css.content}>
-          <div className={css.logo} onClick={linkToHome}>sl</div>
-          <div className={css.logoLarge} onClick={linkToHome}>Stemlink</div>
-          <div className={css.searchBar}>
-            <SearchBar />
-          </div>
-          <HeaderMenu setDdmInView={setDdmInView} toggleDdm={toggleDdm} />
-          <div className={css.ddm} onClick={toggleDdm}>
+          <div className={css.logo} onClick={handleLinkToHome}>sl</div>
+          <div className={css.logoWideView} onClick={handleLinkToHome}>Stemlink</div>
+          <SearchBar />
+          <MenuHeader handleDdmToggle={handleDdmToggle} />
+          <div className={css.ddm} onClick={handleDdmToggle}>
             <Svg icon={ddmInView ? 'close' : 'ddm'} />
           </div>
         </div>
       </div>
 
       {ddmInView &&
-        <DropDownMenu toggleDdm={toggleDdm} />
+        <MenuDropDown />
       }
     </>
   )

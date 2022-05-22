@@ -1,3 +1,19 @@
+export async function getResources(query) {
+  try {
+    const res = await fetch(`https://stemlink.co/api/resources?${query}`)
+    const json = await res.json()
+
+    if (json.success) {
+      return json.data
+    } else {
+      console.log('error: getResources failed at api')
+      return null
+    }
+  } catch (err) {
+    console.error(error)
+    return null
+  }
+}
 export async function postResource(resourceData) {
   try {
     const res = await fetch(`https://stemlink.co/api/resources`, {
@@ -18,7 +34,7 @@ export async function postResource(resourceData) {
       return null
     }
   } catch (err) {
-    console.log('error: postResource failed locally')
+    console.error(error)
     return null
   }
 }
@@ -42,7 +58,7 @@ export async function putResource(updatedResource) {
       return null
     }
   } catch (error) {
-    console.log('error: putResource failed locally')
+    console.error(error)
     return null
   }
 }
@@ -66,7 +82,7 @@ export async function deleteResource(resource) {
       return null
     }
   } catch (error) {
-    console.log('error: deleteResource failed locally')
+    console.error(error)
     return null
   }
 }

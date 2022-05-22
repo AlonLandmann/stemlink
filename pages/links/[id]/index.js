@@ -1,14 +1,11 @@
-import File from '../../../db/models/File'
 import Head from 'next/head'
 import Header from '../../../components/header/Header'
 import InfoContent from '../../../components/pages/InfoContent'
 import Resource from '../../../db/models/Resource'
-import Review from '../../../db/models/Review'
-import { getFile } from '../../../db/api/file'
 import { getSession } from 'next-auth/react'
 import dbConnect from '../../../db/dbConnect'
-import reverse from 'lodash/reverse'
-import sortBy from 'lodash/sortBy'
+import getInfoPipeline from '../../../db/pipelines/getInfoPipeline'
+import getServerSideFile from '../../../lib/getServerSideFile'
 
 export default function Info({ resourceJson }) {
   return (
@@ -28,108 +25,14 @@ export default function Info({ resourceJson }) {
 export async function getServerSideProps(context) {
   dbConnect()
 
-  let session = await getSession(context)
-  let file = null
-
-  if (session) {
-    file = await File.findOne({ email: session.user.email })
-
-    if (!file) {
-      file = await File.create({ ...session.user, savedLinks: [] })
-    }
-  }
-
-  const query = {
-    sort: context.query.sort || 'top'
-  }
-
-  let resource = await Resource.findOne({ _id: context.query.id }).lean()
-  let reviews = await Review.find({ writtenFor: resource._id }).lean()
-  let hydratedReviews = []
-
-  for (let i = 0; i < reviews.length; i++) {
-    hydratedReviews.push({
-      ...reviews[i],
-      upvoted: session ? reviews[i].upvotedBy.indexOf(session.user.email) > -1 : false
-    })
-  }
-
-  if (query.sort === 'recent') {
-    hydratedReviews = reverse(sortBy(hydratedReviews, ['writtenAt']))
-  } else {
-    hydratedReviews = reverse(sortBy(hydratedReviews, [rv => rv.upvotedBy.length]))
-  }
-
-  const hydratedResourceCursor = await Resource.aggregate([
-    {
-      $match: {
-        $expr: {
-          $eq: [
-            '$_id',
-            {
-              $toObjectId: context.query.id
-            }
-          ]
-        }
-      }
-    },
-    {
-      $addFields: {
-        id: {
-          $toString: '$_id'
-        }
-      }
-    },
-    {
-      $lookup: {
-        from: 'files',
-        localField: 'id',
-        foreignField: 'savedLinks',
-        as: 'savers'
-      }
-    },
-    {
-      $addFields: {
-        savers: '$savers.email'
-      }
-    },
-    {
-      $addFields: {
-        saved: {
-          $in: [
-            file ? file.email : '',
-            '$savers'
-          ]
-        },
-        count: {
-          $size: '$savers'
-        },
-        reviews: hydratedReviews
-      }
-    },
-    {
-      $addFields: {
-        rating: {
-          $avg: '$reviews.rating'
-        },
-        reviewedByUser: {
-          $in: [
-            file ? file.email : '',
-            '$reviews.writtenBy'
-          ]
-        }
-      }
-    },
-    {
-      $project: {
-        savers: 0
-      }
-    }
-  ])
+  const session = await getSession(context)
+  const file = await getServerSideFile(session)
+  const pipeline = await getInfoPipeline(context.query, file)
+  const resource = (await Resource.aggregate(pipeline))[0]
 
   return {
     props: {
-      resourceJson: JSON.stringify(hydratedResourceCursor[0])
+      resourceJson: JSON.stringify(resource)
     }
   }
 }

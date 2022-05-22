@@ -1,0 +1,100 @@
+@import './variables';
+
+@mixin collationBar {
+  position: sticky;
+  top: 50px;
+  height: 50px;
+  border-bottom: 1px solid #ddd;
+  background: #fff;
+  & > div {
+    display: flex;
+    align-items: center;
+    max-width: $bp-headers;
+    height: 100%;
+    margin: auto;
+    padding-left: 14px;
+    font-size: 0.9375rem;
+    color: #222;
+  }
+}
+@mixin collationBarButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 120px;
+  height: 100%;
+  border-left: 1px solid #ddd;
+  padding: 0px 20px;
+  font-size: 0.875rem;
+  user-select: none;
+  color: #222;
+  cursor: pointer;
+  &:hover {
+    color: #777;
+  }
+  &.active {
+    background: #f8f8f8;
+  }
+}
+@mixin collationDropDown {
+  position: fixed;
+  top: 100px;
+  z-index: 1;
+  width: 100%;
+  border-bottom: 1px solid #ddd;
+  font-size: 0.9375rem;
+  color: #222;
+  background: #fff;
+  overflow-y: auto;
+  max-height: calc(100vh - 100px);
+}
+@mixin collationHeading {
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  padding: 20px;
+  font-size: 0.875rem;
+  font-style: italic;
+  color: #999;
+  &:first-child {
+    border-top: none;
+  }
+  & > div {
+    max-width: $bp-headers;
+    margin: auto;
+    padding: 0px 14px;
+  }
+}
+@mixin collationGroup {
+  max-width: $bp-headers;
+  margin: auto;
+}
+@mixin collationItem {
+  display: inline-flex;
+  gap: 20px;
+  width: 50%;
+  padding: 20px;
+  font-size: 0.875rem;
+  color: #222;
+  cursor: pointer;
+  &:hover {
+    color: #888;
+  }
+  & > .icon {
+    margin-top: 2px;
+  }
+}
+@mixin collationButtonContainer {
+  border-top: 1px solid #eee;
+  & > div {
+    display: flex;
+    gap: 12px;
+    max-width: $bp-headers;
+    margin: auto;
+    padding: 20px;
+    & > button:last-child {
+      border: 1px solid #999;
+      color: #999;
+    }
+  }
+}

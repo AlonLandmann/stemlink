@@ -1,8 +1,8 @@
-import EditForm from '../forms/EditForm'
+import EditResourceForm from '../forms/EditResourceForm'
 import css from './EditContent.module.scss'
 
 export default function EditContent({ resource }) {
   return (
-    <EditForm resource={resource} />
+    <EditResourceForm resource={resource} />
   )
 }

@@ -1,5 +1,9 @@
-@import '../../styles/mixins';
-
+.searchBar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}
 .container {
   display: flex;
   align-items: center;
@@ -22,13 +26,18 @@
 .input {
   flex-grow: 1;
   & > input {
-    @include standardInput;
     width: 100%;
     border: none;
+    outline: none;
     padding: 6px 2px 6px 10px;
+    font-family: Poppins, sans-serif;
     font-size: 0.8125rem;
-    &:focus {
-      box-shadow: none;
+    color: #777;
+    &:focus::placeholder {
+      color: transparent;
+    }
+    &::placeholder {
+      color: #bbb;
     }
   }
 }

@@ -1,4 +1,4 @@
-@import '../../styles/mixins';
+@import '../../styles/variables';
 
 .container {
   position: sticky;
@@ -14,38 +14,44 @@
   margin: auto;
 }
 .logo {
-  @include standardLink;
   display: flex;
   justify-content: center;
   align-items: center;
   min-width: 45px;
+  color: #222;
+  cursor: pointer;
+  &:hover {
+    color: #777;
+  }
 }
-.logoLarge {
-  @include standardLink;
+.logoWideView {
   display: none;
   justify-content: center;
   align-items: center;
   padding: 0px 30px 0px 14px;
-}
-.searchBar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-grow: 1;
+  color: #222;
+  cursor: pointer;
+  &:hover {
+    color: #777;
+  }
 }
 .ddm {
-  @include standardLink;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-basis: 45px;
+  min-width: 45px;
+  color: #222;
+  cursor: pointer;
+  &:hover {
+    color: #777;
+  }
 }
 
 @media (min-width: $bp-headers) {
   .logo {
     display: none;
   }
-  .logoLarge {
+  .logoWideView {
     display: flex;
   }
   .ddm {

@@ -1,17 +1,17 @@
 import Svg from '../Svg'
-import { deleteReview, getReview, putReview } from '../../db/api/review'
+import { getReview, putReview, deleteReview } from '../../db/client/review'
+import { useRouter } from 'next/router'
 import { useSession, signIn } from 'next-auth/react'
 import { useState } from 'react'
-import { useRouter } from 'next/router'
 import ago from '../../lib/ago'
-import css from './ReviewCard.module.scss'
+import css from './InfoReviewCard.module.scss'
 import toast from 'react-hot-toast'
 
-export default function ReviewCard({ review }) {
+export default function InfoReviewCard({ review }) {
+  const router = useRouter()
+  const { data: session } = useSession()
   const [upvoted, setUpvoted] = useState(review.upvoted)
   const [count, setCount] = useState(review.upvotedBy.length)
-  const { data: session } = useSession()
-  const router = useRouter()
 
   function handleDelete() {
     if (confirm('Are you sure you want to delete this review?')) {
@@ -40,34 +40,34 @@ export default function ReviewCard({ review }) {
     }
   }
 
-  async function toggleUpvote() {
+  async function handleUpvote() {
     if (session) {
-      setCount(prevCount => upvoted ? prevCount - 1 : prevCount + 1)
-      setUpvoted(prevUpvoted => !prevUpvoted)
-
       try {
+        setUpvoted(prevUpvoted => !prevUpvoted)
+        setCount(prevCount => upvoted ? prevCount - 1 : prevCount + 1)
+
         const upToDateReview =  await getReview(review._id)
 
         if (upToDateReview.upvotedBy.indexOf(session.user.email) > -1) {
-          await putReview(createUpdatedReviewWithoutUpvote(upToDateReview))
+          await putReview(createReviewWithoutUpvote(upToDateReview))
         } else {
-          await putReview(createUpdatedReviewWithNewUpvote(upToDateReview))
+          await putReview(createReviewWithNewUpvote(upToDateReview))
         }
       } catch (err) {
-        console.log(err)
+        console.error(err)
       }
     } else {
       signIn()
     }
   }
 
-  function createUpdatedReviewWithNewUpvote(review) {
+  function createReviewWithNewUpvote(review) {
     return {
       ...review,
       upvotedBy: [...review.upvotedBy, session.user.email]
     }
   }
-  function createUpdatedReviewWithoutUpvote(review) {
+  function createReviewWithoutUpvote(review) {
     let updatedReview = { ...review }
     let index = updatedReview.upvotedBy.indexOf(session.user.email)
 
@@ -89,18 +89,14 @@ export default function ReviewCard({ review }) {
             </div>
           }
         </div>
-        <div className={css.title}>
-          {review.title}
-        </div>
-        <div className={css.content}>
-          {review.content}
-        </div>
+        <div className={css.title}>{review.title}</div>
+        <div className={css.content}>{review.content}</div>
       </div>
       <div className={css.rating}>
         <div><Svg icon='rating' /></div>
         <div>{review.rating}</div>
       </div>
-      <div className={upvoted ? css.upvoted : css.notUpvoted} onClick={toggleUpvote}>
+      <div className={upvoted ? css.upvoted : css.notUpvoted} onClick={handleUpvote}>
         <div><Svg icon={upvoted ? 'upvoteFill' : 'upvote'} /></div>
         <div>{count}</div>
       </div>

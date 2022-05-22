@@ -1,8 +1,8 @@
-import NewForm from '../forms/NewForm'
+import NewResourceForm from '../forms/NewResourceForm'
 import css from './NewContent.module.scss'
 
 export default function EditContent({ resource }) {
   return (
-    <NewForm resource={resource} />
+    <NewResourceForm resource={resource} />
   )
 }

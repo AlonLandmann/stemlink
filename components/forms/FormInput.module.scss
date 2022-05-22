@@ -1,0 +1,8 @@
+@import '../../styles/forms';
+
+.inputGroup {
+  @include formInputGroup;
+}
+.errorMessage {
+  @include formErrorMessage;
+}

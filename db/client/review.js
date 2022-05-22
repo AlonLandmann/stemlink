@@ -10,7 +10,7 @@ export async function getReview(id) {
       return null
     }
   } catch (err) {
-    console.log('error: getReview failed locally')
+    console.error(error)
     return null
   }
 }
@@ -34,7 +34,7 @@ export async function postReview(reviewData) {
       return null
     }
   } catch (err) {
-    console.log('error: postReview failed locally')
+    console.error(error)
     return null
   }
 }
@@ -58,7 +58,7 @@ export async function putReview(updatedReview) {
       return null
     }
   } catch (err) {
-    console.log('error: putReview failed locally')
+    console.error(error)
     return null
   }
 }
@@ -82,7 +82,7 @@ export async function deleteReview(review) {
       return null
     }
   } catch (error) {
-    console.log('error: deleteReview failed locally')
+    console.error(error)
     return null
   }
 }

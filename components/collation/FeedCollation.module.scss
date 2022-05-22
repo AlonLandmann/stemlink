@@ -1,0 +1,13 @@
+@import '../../styles/collation';
+
+.collationBar {
+  @include collationBar;
+}
+.filterButton {
+  @include collationBarButton;
+  margin-left: auto;
+}
+.sortButton {
+  @include collationBarButton;
+  border-right: 1px solid #ddd;
+}

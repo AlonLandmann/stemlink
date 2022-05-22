@@ -8,8 +8,8 @@ import { useSession, signIn } from 'next-auth/react'
 import dbConnect from '../../../db/dbConnect'
 
 export default function Edit({ resourceJson }) {
-  const { data: session, status } = useSession()
   const resource = JSON.parse(resourceJson)
+  const { data: session, status } = useSession()
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -41,7 +41,7 @@ export default function Edit({ resourceJson }) {
 export async function getServerSideProps(context) {
   dbConnect()
 
-  let resource = await Resource.findOne({ _id: context.query.id }).lean()
+  const resource = await Resource.findOne({ _id: context.query.id }).lean()
 
   return {
     props: {

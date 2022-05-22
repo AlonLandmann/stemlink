@@ -1,70 +1,53 @@
-import Svg from '../Svg'
-import { useRouter } from 'next/router'
+import CollationItem from './CollationItem'
 import css from './FeedSort.module.scss'
 
-export default function FeedSort({ setSortIsActive, setDdInView }) {
-  const router = useRouter()
+export default function FeedSort({ sort, setSort, handleApply, handleClear }) {
+  function handleSortAdjust(event) {
+    const id = event.currentTarget.id
 
-  function applySort(event) {
-    const newQuery = {
-      ...router.query,
-      sort: event.currentTarget.id
-    }
-
-    if (newQuery.sort === 'popularity') {
-      setSortIsActive(false)
-    } else {
-      setSortIsActive(true)
-    }
-
-    setDdInView(null)
-
-    router.push({
-      pathname: '/search',
-      query: newQuery
-    })
+    setSort(id)
   }
 
   return (
-    <div className={css.dropDownArea}>
-      <div>
-        <div className={css.itemContainer}>
-          <div id='popularity' className={css.item} onClick={applySort}>
-            <div className={css.icon}>
-              <Svg
-                icon={
-                  !router.query.sort || router.query.sort === 'popularity'
-                    ? 'checkboxChecked'
-                    : 'checkboxEmpty'
-                }
-              />
-            </div>
-            <div>most popular</div>
-          </div>
-          <div id='rating' className={css.item} onClick={applySort}>
-            <div className={css.icon}>
-              <Svg icon={router.query.sort === 'rating' ? 'checkboxChecked' : 'checkboxEmpty'} />
-            </div>
-            <div>highest rated</div>
-          </div>
-          <div id='date' className={css.item} onClick={applySort}>
-            <div className={css.icon}>
-              <Svg icon={router.query.sort === 'date' ? 'checkboxChecked' : 'checkboxEmpty'} />
-            </div>
-            <div>newest</div>
-          </div>
-          <div id='priceascending' className={css.item} onClick={applySort}>
-            <div className={css.icon}>
-              <Svg icon={router.query.sort === 'priceascending' ? 'checkboxChecked' : 'checkboxEmpty'} />
-            </div>
-            <div>cheapest</div>
-          </div>
-          <div id='pricedescending' className={css.item} onClick={applySort}>
-            <div className={css.icon}>
-              <Svg icon={router.query.sort === 'pricedescending' ? 'checkboxChecked' : 'checkboxEmpty'} />
-            </div>
-            <div>most expensive</div>
-          </div>
+    <div className={css.collationDropDown}>
+      <div className={css.collationHeading}><div>sort</div></div>
+      <div className={css.collationGroup}>
+        <CollationItem
+          id='popularity'
+          text='most popular'
+          isChecked={sort === 'popularity'}
+          onClick={handleSortAdjust}
+        />
+        <CollationItem
+          id='rating'
+          text='highest rated'
+          isChecked={sort === 'rating'}
+          onClick={handleSortAdjust}
+        />
+        <CollationItem
+          id='date'
+          text='newest'
+          isChecked={sort === 'date'}
+          onClick={handleSortAdjust}
+        />
+        <CollationItem
+          id='priceascending'
+          text='cheapest'
+          isChecked={sort === 'priceascending'}
+          onClick={handleSortAdjust}
+        />
+        <CollationItem
+          id='pricedescending'
+          text='most expensive'
+          isChecked={sort === 'pricedescending'}
+          onClick={handleSortAdjust}
+        />
+      </div>
+
+      <div className={css.collationButtonContainer}>
+        <div>
+          <button onClick={handleApply}>Apply</button>
+          <button onClick={handleClear}>Clear</button>
         </div>
       </div>
     </div>

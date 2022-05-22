@@ -10,7 +10,7 @@ export async function getFile(email) {
       return null
     }
   } catch (err) {
-    console.log('error: getFile failed locally')
+    console.error(error)
     return null
   }
 }
@@ -34,7 +34,7 @@ export async function putFile(updatedFile) {
       return null
     }
   } catch (err) {
-    console.log('error: putFile failed locally')
+    console.error(error)
     return null
   }
 }

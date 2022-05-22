@@ -1,0 +1,80 @@
+@mixin form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-radius: 3px;
+  box-shadow: 0px 0px 1px #aaa;
+  padding: 20px;
+  background: #fff;
+}
+@mixin formTitle {
+  margin-bottom: 5px;
+  border-bottom: 1px solid #ddd;
+  padding: 0px 5px 8px;
+}
+@mixin formInputGroup {
+  display: flex;
+  font-size: 0.875rem;
+  & > label {
+    width: 20%;
+    padding: 3px 5px 0px;
+    color: #333;
+  }
+  & > input,
+  & > select,
+  & > textarea {
+    @include formInput;
+    width: 80%;
+    font-size: 0.875rem;
+  }
+  & > select {
+    padding-left: 4px;
+  }
+  & > textarea {
+    min-height: 31.7px;
+    resize: vertical;
+  }
+  &.hasError > input,
+  &.hasError > textarea {
+    border: 1px solid #e74545;
+    border-radius: 3px;
+    outline: none;
+    &:focus {
+      box-shadow: 0px 0px 1px #e74545;
+    }
+  }
+}
+@mixin formInput {
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  outline: none;
+  padding: 6px 8px;
+  font-family: Poppins, sans-serif;
+  font-size: 0.75rem;
+  color: #777;
+  &:focus {
+    box-shadow: 0px 0px 1px #ccc;
+  }
+  &:focus::placeholder {
+    color: transparent;
+  }
+  &::placeholder {
+    color: #bbb;
+  }
+}
+@mixin formErrorMessage {
+  margin: 4px 0px 8px 2px;
+  padding-left: 20%;
+  font-size: 0.75rem;
+  color: #e74545;
+}
+@mixin formButtonContainer {
+  display: flex;
+  gap: 8px;
+  padding: 6px 0px 0px 20%;
+}
+@mixin formSubmissionLoaderContainer {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}

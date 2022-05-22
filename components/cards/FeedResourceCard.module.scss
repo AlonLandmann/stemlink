@@ -1,0 +1,51 @@
+@import '../../styles/cards';
+
+.card {
+  @include card;
+  cursor: pointer;
+  &:hover {
+    box-shadow: 0px 0px 1px #555;
+  }
+}
+.rating {
+  @include cardRating;
+}
+.notSaved {
+  @include cardToggleButtonOff;
+}
+.saved {
+  @include cardToggleButtonOn;
+}
+.main {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 12px 20px 12px 6px;
+}
+.type {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 80px;
+  & > Svg {
+    width: 22px;
+    height: 22px;
+  }
+}
+.title {
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+.author {
+  margin-bottom: 5px;
+  font-size: 0.75rem;
+  color: #bbb;
+}
+.paid {
+  font-size: 0.75rem;
+  color: #888;
+}
+.free {
+  font-size: 0.75rem;
+  color: #3cb043;
+}
